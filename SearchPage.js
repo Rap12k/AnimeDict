@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {TextInput, Button, StyleSheet, Text, View, Image} from 'react-native';
+import jikanjs from 'jikanjs';
 
-let 
+let
   bgImage = {
     uri: "https://i.imgur.com/KO8mHUm.png"
 };
