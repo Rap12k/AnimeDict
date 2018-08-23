@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import TimerMixin from 'react-timer-mixin';
 import {TextInput, Button, StyleSheet, Text, View, Image} from 'react-native';
 import jikanjs from 'jikanjs';
 
@@ -8,27 +9,65 @@ let
 };
 type Props = {};
 function urlForQueryAndPage(key, value, pageNumber) {
-  const data = {
-      country: 'uk',
-      pretty: '1',
-      encoding: 'json',
-      listing_type: 'buy',
-      action: 'search_listings',
+  mixins: [TimerMixin],
+  this.interval = setInterval(() => {
+  const params = {
+      type: 'TV',
       page: pageNumber,
   };
-  data[key] = value;
+  params[key] = value;
 
-  const querystring = Object.keys(data)
-    .map(key => key + '=' + encodeURIComponent(data[key]))
+  const querystring = Object.keys(params)
+    .map(key => key + '=' + encodeURIComponent(params[key]))
     .join('&');
 
-  return 'https://api.nestoria.co.uk/api?' + querystring;
-}
+  return 'https://api.jikan.moe/search/anime?q=' + querystring;
+},4000);}
 export default class SearchPage extends Component<Props> {
 	static navigationOptions = {
     title: 'AnimeDict',
   };
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchString: 'Bobobo',
+      isLoading: false,
+      message: '',
+    };
+  }
+  _onSearchTextChanged = (event) => {
+    console.log('_onSearchTextChanged');
+    this.setState({ searchString: event.nativeEvent.text });
+    console.log('Current: '+this.state.searchString+', Next:'+event.nativeEvent.text);
+  };
+  _executeQuery = (query) => {
+    console.log(query);
+    this.setState({ isLoading: true });
+    fetch(query)
+      .then(response => response.json())
+      .then(json => this._handleResponse(json.response))
+      .catch(error =>
+        this.setState({
+          isLoading: false,
+          message: 'Something bad happened ' + error
+        }));
+  };
+  _handleResponse = (response) => {
+    this.setState({ isLoading: false, message: ''});
+    if (response.application_response_code.substr(0, 1) === '1') {
+      this.props.navigation.navigate(
+        'Results', {listings: response.result});
+    } else {
+      this.setState({ message: 'Anime not recognized; please try again'});
+    }
+  };
+  _onSearchPressed = () => {
+    const query = urlForQueryAndPage('title', this.state.searchString, 1);
+    this._executeQuery(query);
+  };
   render() {
+    const spinner = this.state.isLoading ?
+      <ActivityIndicator size='small'/> : null;
     return (
       <View style={styles.container}>
         <View style={styles.content}>
@@ -44,6 +83,7 @@ export default class SearchPage extends Component<Props> {
           </View>
           <View style={styles.bottomContainer}>
             <Text style={styles.welcome}>Check a tag below: </Text>
+            {spinner}
           </View>
         </View>
       </View>
@@ -88,8 +128,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   Image: {
-    height: 300,
-    width: 360,
+    height: 200,
+    width: 260,
     alignSelf: 'center'
   },
   welcome: {
