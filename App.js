@@ -14,11 +14,21 @@ import AnimeView from './AnimeView';
 import {
   createStackNavigator,
 } from 'react-navigation';
+import './shim.js';
 
-const App = createStackNavigator({
-  Home: { screen: SearchPage },
-  Results: { screen: SearchResults },
-  Anime: { screen: AnimeView },
-});
 
-export default App;
+const RootStack = createStackNavigator(
+  {
+  Home: SearchPage,
+  Results: SearchResults,
+  Anime: AnimeView,
+  },
+  { initialRouteName: 'Home',
+  }
+);
+
+export default class App extends React.Component {
+  render() {
+    return <RootStack />;
+  }
+};

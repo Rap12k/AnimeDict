@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
 import TimerMixin from 'react-timer-mixin';
-import {TextInput, Button, StyleSheet, Text, View, Image} from 'react-native';
-import jikanjs from 'jikanjs';
+import createStackNavigator from 'react-navigation';
+import {TextInput,
+   Button,
+   StyleSheet,
+   Text,
+   View,
+   Image,
+   ActivityIndicator,} from 'react-native';
 
 let
   bgImage = {
     uri: "https://i.imgur.com/KO8mHUm.png"
 };
-type Props = {};
 function urlForQueryAndPage(key, value, pageNumber) {
-  mixins: [TimerMixin],
-  this.interval = setInterval(() => {
   const params = {
+      q: value,
       type: 'TV',
       page: pageNumber,
   };
@@ -21,8 +25,8 @@ function urlForQueryAndPage(key, value, pageNumber) {
     .map(key => key + '=' + encodeURIComponent(params[key]))
     .join('&');
 
-  return 'https://api.jikan.moe/search/anime?q=' + querystring;
-},4000);}
+  return 'https://api.jikan.moe/search/anime?' + querystring;
+}
 export default class SearchPage extends Component<Props> {
 	static navigationOptions = {
     title: 'AnimeDict',
@@ -35,55 +39,48 @@ export default class SearchPage extends Component<Props> {
       message: '',
     };
   }
-  _onSearchTextChanged = (event) => {
-    console.log('_onSearchTextChanged');
-    this.setState({ searchString: event.nativeEvent.text });
-    console.log('Current: '+this.state.searchString+', Next:'+event.nativeEvent.text);
-  };
   _executeQuery = (query) => {
-    console.log(query);
-    this.setState({ isLoading: true });
+    this.setState(
+      { isLoading: true });
     fetch(query)
       .then(response => response.json())
-      .then(json => this._handleResponse(json.response))
+      .then(responseJson => {
+        this.setState({ isLoading: false, message: ''});
+        this.props.navigation.navigate(
+          'Results', {result: responseJson.result});
+      })
       .catch(error =>
         this.setState({
           isLoading: false,
           message: 'Something bad happened ' + error
         }));
   };
-  _handleResponse = (response) => {
-    this.setState({ isLoading: false, message: ''});
-    if (response.application_response_code.substr(0, 1) === '1') {
-      this.props.navigation.navigate(
-        'Results', {listings: response.result});
-    } else {
-      this.setState({ message: 'Anime not recognized; please try again'});
-    }
-  };
   _onSearchPressed = () => {
-    const query = urlForQueryAndPage('title', this.state.searchString, 1);
+    const query = urlForQueryAndPage('anime', this.state.searchString, 1);
     this._executeQuery(query);
   };
   render() {
     const spinner = this.state.isLoading ?
-      <ActivityIndicator size='small'/> : null;
+      <ActivityIndicator size='large'/> : null;
     return (
       <View style={styles.container}>
         <View style={styles.content}>
           <Image source={bgImage} style={styles.Image}/>
           <View style={styles.text}>
             <Text style={styles.welcome}>Find Anime</Text>
-            <Text style={styles.instructions}>This App does bla bla bla, Enter below:</Text>
+            <Text style={styles.instructions}>Enter an Anime to search below:</Text>
+            {spinner}
+            <Text style={styles.description}>{this.state.message}</Text>
           </View>
           <View style={styles.flowRight}><TextInput underlineColorAndroid={'transparent'}
              style={styles.searchInput}
+             onChangeText={(searchString) => this.setState({searchString})}
+             value={this.state.text}
             placeholder='Enter Here' />
             <Button color='#48BBEC' title='Go' onPress={this._onSearchPressed}/>
           </View>
           <View style={styles.bottomContainer}>
-            <Text style={styles.welcome}>Check a tag below: </Text>
-            {spinner}
+            <Text style={styles.welcome}>Check a Box Below: </Text>
           </View>
         </View>
       </View>
@@ -95,6 +92,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
+  },
+  description: {
+    marginBottom: 20,
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#656565'
   },
   bottomContainer: {
     height: 190,
@@ -128,8 +131,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   Image: {
-    height: 200,
-    width: 260,
+    height: 250,
+    width: 360,
     alignSelf: 'center'
   },
   welcome: {
