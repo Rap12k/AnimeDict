@@ -19,15 +19,16 @@ export default class AnimeView extends Component {
     var anime = params.result;
     return (
       <View style={styles.container}>
-        <View style={styles.heading}>
-          <Text style={styles.price}>English: {anime.title} Japanese: {anime.title_japanese}</Text>
-          <Text style={styles.title}>Status: {anime.status}</Text>
+      <Image style={styles.image}
+          source={{uri: anime.image_url}} />
+        <View style={styles.content}>
+          <Text style={styles.price}>{anime.title}</Text>
+          <Text style={styles.title}>Type: {anime.type}</Text>
           <Text style={styles.title}>Number of Episodes: {anime.episodes}</Text>
-          <Text style={styles.title}>Aired: {anime.aired}</Text>
-          <Text style={styles.title}>Rating: {anime.rating}</Text>
+          <Text style={styles.title}>Score: {anime.score}</Text>
           <View style={styles.separator}/>
         </View>
-        <Text style={styles.description}>{anime.synopsis}</Text>
+        <Text style={styles.description}>{anime.description}</Text>
       </View>
     );
   }
@@ -35,29 +36,32 @@ export default class AnimeView extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 65
+    flex: 1,
+    backgroundColor: 'rgb(245, 252, 255)'
   },
-  heading: {
-    backgroundColor: '#F8F8F8',
+  content: {
   },
   separator: {
     height: 1,
-    backgroundColor: '#DDDDDD'
+    backgroundColor: 'rgb(169,63,85)',
+  },
+  image: {
+    flex:  2
   },
   price: {
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#48BBEC',
-    alignSelf: center,
+    color: 'rgb(169,63,85)',
+    alignSelf: 'center',
   },
   title: {
     fontSize: 18,
     margin: 5,
-    color: '#656565'
+    color: 'rgb(169,63,85)',
   },
   description: {
     fontSize: 18,
     margin: 5,
-    color: '#656565'
+    color: 'rgb(169,63,85)',
   }
 });
