@@ -51,17 +51,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#41EAD4',
+    color: '#011627',
     alignSelf: 'center',
   },
   headings: {
     fontSize: 18,
     margin: 5,
-    color: '#F71735',
+    color: '#011627',
   },
   description: {
     fontSize: 18,
     margin: 5,
-    color: '#FF9F1C',
+    color: '#011627',
   }
 });
