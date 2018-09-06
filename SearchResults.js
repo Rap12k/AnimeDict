@@ -61,7 +61,7 @@ export default class SearchResults extends Component {
     return (
       <FlatList
         data={params.result}
-        keyExtractor={this._keyExtractor}
+        keyExtractor={(item) => item.toString()}
         renderItem={this._renderItem}
       />
     );
