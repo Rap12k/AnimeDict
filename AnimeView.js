@@ -19,24 +19,29 @@ export default class AnimeView extends Component {
     var anime = params.result;
     return (
       <View style={styles.container}>
-      <Image style={styles.image}
+        <Image style={styles.image}
           source={{uri: anime.image_url}} />
+        <Text style={styles.title}>{anime.title}</Text>
         <View style={styles.content}>
-          <Text style={styles.title}>{anime.title}</Text>
-          <View style={styles.data}>
-            <Text style={styles.headings}>Type: {anime.type}</Text>
-            <View style={styles.separator}/>
-            <Text style={styles.headings}>Number of Episodes: {anime.episodes}</Text>
-            <View style={styles.separator}/>
-            <Text style={styles.headings}>Score: {anime.score}</Text>
-            <View style={styles.separator}/>
-            <Text style={styles.headings}>Rating: {anime.rated}</Text>
-            <View style={styles.separator}/>
-            <Text style={styles.headings}>Currently Airing?: {anime.airing}</Text>
-            <View style={styles.separator}/>
-            <Text style={styles.headings}>First Aired: {anime.start_date}</Text>
+          <View style={styles.dataRow}>
+            <View style={styles.data}>
+              <View style={styles.separator}/>
+              <Text style={styles.headings}>Type: {anime.type}</Text>
+              <View style={styles.separator}/>
+              <Text style={styles.headings}>Episodes: {anime.episodes}</Text>
+              <View style={styles.separator}/>
+              <Text style={styles.headings}>Score: {anime.score}</Text>
+              <View style={styles.separator}/>
+              <Text style={styles.headings}>Rating: {anime.rated}</Text>
+              <View style={styles.separator}/>
+              <Text style={styles.headings}>Airing?: {anime.airing ? 'Yes' : 'No'}</Text>
+              <View style={styles.separator}/>
+              <Text style={styles.headings}>Aired: {anime.start_date.slice(0, 10)}</Text>
+            </View>
+            <View style={styles.prose}>
+              <Text style={styles.description}>{anime.synopsis}</Text>
+            </View>
           </View>
-          <Text style={styles.description}>{anime.synopsis}</Text>
         </View>
       </View>
     );
@@ -60,31 +65,39 @@ const styles = StyleSheet.create({
     backgroundColor: '#011627',
   },
   image: {
-    flex:  2,
+    flex:  1,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#d80032',
-    alignSelf: 'center',
+    textAlign: 'center',
+    padding: 5,
   },
   headings: {
     fontSize: 16,
-    margin: 5,
+    padding: 4,
     color: '#011627',
   },
   description: {
     fontSize: 18,
-    margin: 5,
     color: '#011627',
-    width: '70%',
+  },
+  dataRow: {
+    flexDirection: 'row',
+    flex: 2,
   },
   data: {
     flexDirection: 'column',
     flex: 1,
     width: '30%',
+  },
+  prose: {
+    padding: 5,
+    width: '70%',
     borderWidth: 1,
     borderColor: 'rgb(0,0,0)',
     borderRadius: 1,
-  }
+    flex:2,
+  },
 });

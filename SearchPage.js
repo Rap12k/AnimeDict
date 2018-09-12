@@ -27,7 +27,7 @@ function urlForQueryAndPage(key, value, pageNumber) {
 
   return 'https://api.jikan.moe/v3/search/anime?' + querystring;
 }
-export default class SearchPage extends Component<Props> {
+class SearchPage extends Component<Props> {
 	static navigationOptions = {
     title: 'AnimeDict',
   };
@@ -35,23 +35,25 @@ export default class SearchPage extends Component<Props> {
     super(props);
     this.state = {
       searchString: 'Bobobo',
-      isLoading: false,
+      disabled: false,
       message: '',
     };
   }
   _executeQuery = (query) => {
     this.setState(
-      { isLoading: true });
+      { 
+        disabled: true,
+      });
     fetch(query)
       .then(response => response.json())
       .then(responseJson => {
-        this.setState({ isLoading: false, message: ''});
+        this.setState({ message: '', disabled: false});
         this.props.navigation.navigate(
-          'Results', {result: responseJson.result});
+          'Results', {result: responseJson.results});
       })
       .catch(error =>
         this.setState({
-          isLoading: false,
+          disabled: false,
           message: 'Something bad happened ' + error
         }));
   };
@@ -60,8 +62,6 @@ export default class SearchPage extends Component<Props> {
     this._executeQuery(query);
   };
   render() {
-    const spinner = this.state.isLoading ?
-      <ActivityIndicator size='large'/> : null;
     return (
       <View style={styles.container}>
         <View style={styles.content}>
@@ -76,10 +76,9 @@ export default class SearchPage extends Component<Props> {
              onChangeText={(searchString) => this.setState({searchString})}
              value={this.state.text}
             placeholder='Enter Here' />
-            <Button color='#F71735' title='Go' onPress={this._onSearchPressed}/>
+            <Button color='#F71735' title='Go' onPress={this._onSearchPressed} disabled={this.state.disabled}/>
           </View>
           <View style={styles.bottomContainer}>
-            {spinner}
             <Text style={styles.heading}>Check a Box Below: </Text>
           </View>
         </View>
@@ -151,3 +150,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+export default SearchPage;
