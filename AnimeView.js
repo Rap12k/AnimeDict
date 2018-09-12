@@ -21,18 +21,22 @@ export default class AnimeView extends Component {
       <View style={styles.container}>
       <Image style={styles.image}
           source={{uri: anime.image_url}} />
-          <Text style={styles.title}>{anime.title}</Text>
         <View style={styles.content}>
+          <Text style={styles.title}>{anime.title}</Text>
           <View style={styles.data}>
-            <View style={styles.separator}/>
             <Text style={styles.headings}>Type: {anime.type}</Text>
             <View style={styles.separator}/>
             <Text style={styles.headings}>Number of Episodes: {anime.episodes}</Text>
             <View style={styles.separator}/>
             <Text style={styles.headings}>Score: {anime.score}</Text>
             <View style={styles.separator}/>
+            <Text style={styles.headings}>Rating: {anime.rated}</Text>
+            <View style={styles.separator}/>
+            <Text style={styles.headings}>Currently Airing?: {anime.airing}</Text>
+            <View style={styles.separator}/>
+            <Text style={styles.headings}>First Aired: {anime.start_date}</Text>
           </View>
-          <Text style={styles.description}>{anime.description}</Text>
+          <Text style={styles.description}>{anime.synopsis}</Text>
         </View>
       </View>
     );
@@ -42,7 +46,10 @@ export default class AnimeView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FDFFFC'
+    backgroundColor: '#FDFFFC',
+    borderWidth: 1,
+    borderColor: 'rgb(0,0,0)',
+    borderRadius: 1,
   },
   content: {
     flexDirection: 'row', 
@@ -76,5 +83,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     width: '30%',
+    borderWidth: 1,
+    borderColor: 'rgb(0,0,0)',
+    borderRadius: 1,
   }
 });

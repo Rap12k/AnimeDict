@@ -25,7 +25,7 @@ function urlForQueryAndPage(key, value, pageNumber) {
     .map(key => key + '=' + encodeURIComponent(params[key]))
     .join('&');
 
-  return 'https://api.jikan.moe/search/anime?' + querystring;
+  return 'https://api.jikan.moe/v3/search/anime?' + querystring;
 }
 export default class SearchPage extends Component<Props> {
 	static navigationOptions = {
