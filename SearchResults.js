@@ -19,15 +19,15 @@ class ListItem extends React.PureComponent {
     return (
       <TouchableHighlight
         onPress={this._onPress}
-        underlayColor='#dddddd'>
+        underlayColor='#8d99ae'>
         <View>
           <View style={styles.rowContainer}>
             <Image style={styles.thumb} source={{ uri: item.image_url }} />
             <View style={styles.textContainer}>
-              <Text style={styles.price}>{item.title}</Text>
-              <Text style={styles.title}>Type: {item.type}</Text>
-              <Text style={styles.title}>Number of Episodes: {item.episodes}</Text>
-              <Text style={styles.title}>MAL Score: {item.score}</Text>
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.header}>Type: {item.type}</Text>
+              <Text style={styles.header}>Number of Episodes: {item.episodes}</Text>
+              <Text style={styles.header}>MAL Score: {item.score}</Text>
             </View>
           </View>
           <View style={styles.separator}/>
@@ -80,17 +80,18 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#dddddd'
   },
-  price: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#48BBEC'
-  },
   title: {
     fontSize: 20,
-    color: '#656565'
+    fontWeight: 'bold',
+    color: '#d80032'
+  },
+  header: {
+    fontSize: 18,
+    color: '#011627'
   },
   rowContainer: {
     flexDirection: 'row',
-    padding: 10
+    padding: 10,
+    backgroundColor: "#FDFFFC"
   },
 });

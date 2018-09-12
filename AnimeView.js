@@ -21,14 +21,19 @@ export default class AnimeView extends Component {
       <View style={styles.container}>
       <Image style={styles.image}
           source={{uri: anime.image_url}} />
-        <View style={styles.content}>
           <Text style={styles.title}>{anime.title}</Text>
-          <Text style={styles.headings}>Type: {anime.type}</Text>
-          <Text style={styles.headings}>Number of Episodes: {anime.episodes}</Text>
-          <Text style={styles.headings}>Score: {anime.score}</Text>
-          <View style={styles.separator}/>
+        <View style={styles.content}>
+          <View style={styles.data}>
+            <View style={styles.separator}/>
+            <Text style={styles.headings}>Type: {anime.type}</Text>
+            <View style={styles.separator}/>
+            <Text style={styles.headings}>Number of Episodes: {anime.episodes}</Text>
+            <View style={styles.separator}/>
+            <Text style={styles.headings}>Score: {anime.score}</Text>
+            <View style={styles.separator}/>
+          </View>
+          <Text style={styles.description}>{anime.description}</Text>
         </View>
-        <Text style={styles.description}>{anime.description}</Text>
       </View>
     );
   }
@@ -40,28 +45,36 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDFFFC'
   },
   content: {
+    flexDirection: 'row', 
+    flex: 1,
   },
   separator: {
     height: 1,
     backgroundColor: '#011627',
   },
   image: {
-    flex:  2
+    flex:  2,
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#41EAD4',
+    color: '#d80032',
     alignSelf: 'center',
   },
   headings: {
-    fontSize: 18,
+    fontSize: 16,
     margin: 5,
-    color: '#F71735',
+    color: '#011627',
   },
   description: {
     fontSize: 18,
     margin: 5,
-    color: '#FF9F1C',
+    color: '#011627',
+    width: '70%',
+  },
+  data: {
+    flexDirection: 'column',
+    flex: 1,
+    width: '30%',
   }
 });

@@ -67,9 +67,8 @@ export default class SearchPage extends Component<Props> {
         <View style={styles.content}>
           <Image source={bgImage} style={styles.Image}/>
           <View style={styles.text}>
-            <Text style={styles.welcome}>Find Anime</Text>
+            <Text style={styles.heading}>Find Anime</Text>
             <Text style={styles.instructions}>Enter an Anime to search below:</Text>
-            {spinner}
             <Text style={styles.description}>{this.state.message}</Text>
           </View>
           <View style={styles.flowRight}><TextInput underlineColorAndroid={'transparent'}
@@ -77,10 +76,11 @@ export default class SearchPage extends Component<Props> {
              onChangeText={(searchString) => this.setState({searchString})}
              value={this.state.text}
             placeholder='Enter Here' />
-            <Button color='#48BBEC' title='Go' onPress={this._onSearchPressed}/>
+            <Button color='#F71735' title='Go' onPress={this._onSearchPressed}/>
           </View>
           <View style={styles.bottomContainer}>
-            <Text style={styles.welcome}>Check a Box Below: </Text>
+            {spinner}
+            <Text style={styles.heading}>Check a Box Below: </Text>
           </View>
         </View>
       </View>
@@ -91,28 +91,29 @@ export default class SearchPage extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#FDFFFC',
   },
   description: {
     marginBottom: 20,
     fontSize: 18,
     textAlign: 'center',
-    color: '#656565'
+    color: '#011627'
   },
   bottomContainer: {
-    height: 190,
-    backgroundColor: 'rgb(158,208,230)',
-    width: 360,
+    flex: 2,
+    backgroundColor: '#FDFFFC',
   },
   text: {
-    backgroundColor: 'rgb(158,208,230)',
+    backgroundColor: '#FDFFFC',
     alignItems: 'center',
     alignSelf: 'stretch',
+    flex: 1,
   },
   flowRight: {
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'stretch',
+  padding: 5,
   },
   searchInput: {
     height: 36,
@@ -129,24 +130,24 @@ const styles = StyleSheet.create({
     borderColor: '#B0B0B0',
     borderWidth: 2,
     alignItems: 'center',
+    flex: 1,
   },
   Image: {
     height: 250,
     width: 360,
     alignSelf: 'center'
   },
-  welcome: {
+  heading: {
     fontSize: 30,
     fontWeight: 'bold',
     padding: 5,
     paddingTop: 0,
     alignSelf: 'center',
-    color: 'rgb(169,63,85)',
+    color: '#011627',
   },
   instructions: {
-    marginBottom: 5,
     padding: 5,
-    color: 'rgb(169,63,85)',
+    color: '#011627',
     fontSize: 20,
   },
 });
