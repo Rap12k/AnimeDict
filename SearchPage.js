@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import TimerMixin from 'react-timer-mixin';
-import createStackNavigator from 'react-navigation';
 import {TextInput,
    Button,
    StyleSheet,
    Text,
    View,
    Image,
-   ActivityIndicator,} from 'react-native';
+   ActivityIndicator,
+   CheckBox,} from 'react-native';
 
 let
   bgImage = {
@@ -37,6 +37,9 @@ class SearchPage extends Component<Props> {
       searchString: 'Bobobo',
       disabled: false,
       message: '',
+      queryCheckBoxAnime: false,
+      queryCheckBoxManga: false,
+      queryCheckBoxCharacter: false,
     };
   }
   _executeQuery = (query) => {
@@ -80,6 +83,26 @@ class SearchPage extends Component<Props> {
           </View>
           <View style={styles.bottomContainer}>
             <Text style={styles.heading}>Check a Box Below: </Text>
+            <View style={styles.checkRow}>
+              <CheckBox
+                onValueChange={(value) => this.setState({queryCheckBoxAnime: value})}
+                style={styles.boxes}
+                value={this.state.queryCheckBoxAnime}
+              />
+              <Text style={styles.boxText}>Anime</Text>
+              <CheckBox
+                onValueChange={(value) => this.setState({queryCheckBoxManga: value})}
+                style={styles.boxes}
+                value={this.state.queryCheckBoxManga}
+              />
+              <Text style={styles.boxText}>Manga</Text>
+              <CheckBox
+                onValueChange={(value) => this.setState({queryCheckBoxCharacter: value})}
+                style={styles.boxes}
+                value={this.state.queryCheckBoxCharacter}
+              />
+              <Text style={styles.boxText}>Character</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -91,6 +114,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FDFFFC',
+  },
+  boxText: {
+    padding: 2,
+    fontSize: 17,
+    color: '#011627',
   },
   description: {
     marginBottom: 20,
@@ -148,6 +176,12 @@ const styles = StyleSheet.create({
     padding: 5,
     color: '#011627',
     fontSize: 20,
+  },
+  checkRow: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  boxes: {
   },
 });
 
