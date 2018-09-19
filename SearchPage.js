@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import TimerMixin from 'react-timer-mixin';
 import {TextInput,
    Button,
@@ -7,26 +8,12 @@ import {TextInput,
    View,
    Image,
    ActivityIndicator,
-   CheckBox,} from 'react-native';
+   } from 'react-native';
 
 let
   bgImage = {
     uri: "https://i.imgur.com/KO8mHUm.png"
 };
-function urlForQueryAndPage(key, value, pageNumber) {
-  const params = {
-      q: value,
-      type: 'TV',
-      page: pageNumber,
-  };
-  params[key] = value;
-
-  const querystring = Object.keys(params)
-    .map(key => key + '=' + encodeURIComponent(params[key]))
-    .join('&');
-
-  return 'https://api.jikan.moe/v3/search/anime?' + querystring;
-}
 class SearchPage extends Component<Props> {
 	static navigationOptions = {
     title: 'AnimeDict',
@@ -37,9 +24,21 @@ class SearchPage extends Component<Props> {
       searchString: 'Bobobo',
       disabled: false,
       message: '',
-      queryCheckBoxAnime: false,
-      queryCheckBoxManga: false,
-      queryCheckBoxCharacter: false,
+      value: 0,
+      radio_props: [
+        {
+          label: 'Anime',
+          value: 0,
+        },
+        {
+          label: 'Manga',
+          value: 1,
+        },
+        {
+          label: 'Character',
+          value: 2,
+        },
+      ],
     };
   }
   _executeQuery = (query) => {
@@ -60,15 +59,30 @@ class SearchPage extends Component<Props> {
           message: 'Something bad happened ' + error
         }));
   };
+  _urlQuery = () => {
+      const params = {
+          q: this.state.searchString,
+          page: 1
+      };
+      var key;
+      params[key] = key;
+    
+      const querystring = Object.keys(params)
+        .map(key => key + '=' + encodeURIComponent(params[key]))
+        .join('&');
+    
+      return 'https://api.jikan.moe/v3/search/anime?' + querystring;
+  };
   _onSearchPressed = () => {
-    const query = urlForQueryAndPage('anime', this.state.searchString, 1);
+    const query = this._urlQuery();
     this._executeQuery(query);
   };
   render() {
+    const {value, radio_props} = this.state;
     return (
       <View style={styles.container}>
+        <Image source={bgImage} style={styles.Image}/>
         <View style={styles.content}>
-          <Image source={bgImage} style={styles.Image}/>
           <View style={styles.text}>
             <Text style={styles.heading}>Find Anime</Text>
             <Text style={styles.instructions}>Enter an Anime to search below:</Text>
@@ -83,25 +97,16 @@ class SearchPage extends Component<Props> {
           </View>
           <View style={styles.bottomContainer}>
             <Text style={styles.heading}>Check a Box Below: </Text>
-            <View style={styles.checkRow}>
-              <CheckBox
-                onValueChange={(value) => this.setState({queryCheckBoxAnime: value})}
-                style={styles.boxes}
-                value={this.state.queryCheckBoxAnime}
+            <View>
+              <RadioForm
+                radio_props={radio_props}
+                initial={0}
+                formHorizontal={true}
+                labelHorizontal={false}
+                buttonColor={'#2196f3'}
+                animation={true}
+                onPress={(value) => {this.setState({value:value})}}
               />
-              <Text style={styles.boxText}>Anime</Text>
-              <CheckBox
-                onValueChange={(value) => this.setState({queryCheckBoxManga: value})}
-                style={styles.boxes}
-                value={this.state.queryCheckBoxManga}
-              />
-              <Text style={styles.boxText}>Manga</Text>
-              <CheckBox
-                onValueChange={(value) => this.setState({queryCheckBoxCharacter: value})}
-                style={styles.boxes}
-                value={this.state.queryCheckBoxCharacter}
-              />
-              <Text style={styles.boxText}>Character</Text>
             </View>
           </View>
         </View>
@@ -153,15 +158,14 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   content: {
-    width: '100%',
+    flex: 1,
     borderColor: '#B0B0B0',
     borderWidth: 2,
     alignItems: 'center',
-    flex: 1,
   },
   Image: {
-    height: 250,
-    width: 360,
+    height: '50%',
+    width: '100%',
     alignSelf: 'center'
   },
   heading: {
