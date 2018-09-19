@@ -10,7 +10,9 @@ import React, {Component} from 'react';
 import {TextInput, Button, StyleSheet, Text, View, Image} from 'react-native';
 import SearchPage from './SearchPage';
 import SearchResults from './SearchResults';
+import MangaResults from './MangaResults';
 import AnimeView from './AnimeView';
+import MangaView from './MangaView';
 import {
   createStackNavigator,
 } from 'react-navigation';
@@ -21,7 +23,9 @@ const RootStack = createStackNavigator(
   {
   Home: SearchPage,
   Results: SearchResults,
+  MangaList: MangaResults,
   Anime: AnimeView,
+  Manga: MangaView,
   },
   { initialRouteName: 'Home',
   }

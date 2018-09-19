@@ -26,7 +26,7 @@ class ListItem extends React.PureComponent {
             <View style={styles.textContainer}>
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.header}>Type: {item.type}</Text>
-              <Text style={styles.header}>Episodes: {item.episodes}</Text>
+              <Text style={styles.header}>Chapters: {item.chapters}</Text>
               <Text style={styles.header}>MAL Score: {item.score}</Text>
             </View>
           </View>
@@ -37,9 +37,9 @@ class ListItem extends React.PureComponent {
   }
 }
 
-export default class SearchResults extends Component {
+export default class MangaResults extends Component {
   static navigationOptions = {
-    title: 'Anime Results',
+    title: 'Manga Results',
     headerTitleStyle: {textAlign:'center', alignSelf:'center',flex:1, fontWeight:'bold',},
   };
   _keyExtractor = (item, index) => index;
@@ -54,7 +54,7 @@ export default class SearchResults extends Component {
 
   _onPressItem = (index) => {
     const { navigate, state } = this.props.navigation;
-    navigate('Anime', {result: state.params.result[index]});
+    navigate('Manga', {result: state.params.result[index]});
   };
   render() {
     const { params } = this.props.navigation.state;

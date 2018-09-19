@@ -27,15 +27,15 @@ class SearchPage extends Component<Props> {
       value: 0,
       radio_props: [
         {
-          label: 'Anime',
+          label: '  Anime  ',
           value: 0,
         },
         {
-          label: 'Manga',
+          label: '  Manga  ',
           value: 1,
         },
         {
-          label: 'Character',
+          label: 'Something',
           value: 2,
         },
       ],
@@ -50,8 +50,20 @@ class SearchPage extends Component<Props> {
       .then(response => response.json())
       .then(responseJson => {
         this.setState({ message: '', disabled: false});
-        this.props.navigation.navigate(
-          'Results', {result: responseJson.results});
+        switch (this.state.value) {
+          case 0:
+            this.props.navigation.navigate(
+            'Results', {result: responseJson.results});
+            break;
+          case 1:
+            this.props.navigation.navigate(
+              'MangaList', {result: responseJson.results});
+              break;
+          default:
+            this.props.navigation.navigate(
+              'Results', {result: responseJson.results});
+            break;
+        }
       })
       .catch(error =>
         this.setState({
@@ -66,12 +78,14 @@ class SearchPage extends Component<Props> {
       };
       var key;
       params[key] = key;
+      var options = ["anime", "manga", "character"];
+      var selectedOption = options[this.state.value];
     
       const querystring = Object.keys(params)
         .map(key => key + '=' + encodeURIComponent(params[key]))
         .join('&');
     
-      return 'https://api.jikan.moe/v3/search/anime?' + querystring;
+      return `https://api.jikan.moe/v3/search/${selectedOption}?` + querystring;
   };
   _onSearchPressed = () => {
     const query = this._urlQuery();
