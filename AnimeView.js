@@ -36,7 +36,9 @@ export default class AnimeView extends Component {
               <View style={styles.separator}/>
               <Text style={styles.headings}>Airing?: {anime.airing ? 'Yes' : 'No'}</Text>
               <View style={styles.separator}/>
-              <Text style={styles.headings}>Aired: {anime.start_date.slice(0, 10)}</Text>
+              <Text style={styles.headings}>Aired: {anime.start_date ? anime.start_date.slice(0,10) : 'Not Yet' }</Text>
+              <View style={styles.separator}/>
+              <Text style={styles.headings}>Ended: {anime.end_date ? anime.end_date.slice(0,10) : 'Not Yet' }</Text>
             </View>
             <View style={styles.prose}>
               <Text style={styles.description}>{anime.synopsis}</Text>

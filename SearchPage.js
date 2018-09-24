@@ -35,7 +35,7 @@ class SearchPage extends Component<Props> {
           value: 1,
         },
         {
-          label: 'Something',
+          label: '  Genre  ',
           value: 2,
         },
       ],
@@ -77,7 +77,7 @@ class SearchPage extends Component<Props> {
           page: 1
       };
       var key;
-      params[key] = key;
+      key = params[key];
       var options = ["anime", "manga", "character"];
       var selectedOption = options[this.state.value];
     

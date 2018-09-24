@@ -9,6 +9,11 @@ import {
   FlatList,
   Text,
 } from 'react-native';
+let
+ nsfwImage = {
+  image_url: "https://i.imgur.com/iux1a7b.png"
+};
+const nsfwRating = ["R", "Rx", "R+"];
 class ListItem extends React.PureComponent {
   _onPress = () => {
     this.props.onPressItem(this.props.index);
@@ -22,12 +27,12 @@ class ListItem extends React.PureComponent {
         underlayColor='#8d99ae'>
         <View>
           <View style={styles.rowContainer}>
-            <Image style={styles.thumb} source={{ uri: item.image_url }} />
+            <Image style={styles.thumb} source={nsfwRating.includes(item.rated) ? {uri: nsfwImage.image_url} : {uri: item.image_url} } />
             <View style={styles.textContainer}>
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.header}>Type: {item.type}</Text>
               <Text style={styles.header}>Episodes: {item.episodes}</Text>
-              <Text style={styles.header}>MAL Score: {item.score}</Text>
+              <Text style={styles.header}>Rating: {item.rated ? item.rated : 'None'}</Text>
             </View>
           </View>
           <View style={styles.separator}/>
