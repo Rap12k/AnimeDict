@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-import TimerMixin from 'react-timer-mixin';
 import {TextInput,
    Button,
    StyleSheet,
    Text,
    View,
    Image,
-   ActivityIndicator,
+   Picker,
    } from 'react-native';
 
 let
@@ -22,9 +21,10 @@ class SearchPage extends Component<Props> {
     super(props);
     this.state = {
       searchString: 'Bobobo',
-      disabled: false,
       message: '',
       value: 0,
+      picked: 0,
+      genrePicked: 0,
       radio_props: [
         {
           label: '  Anime  ',
@@ -34,11 +34,30 @@ class SearchPage extends Component<Props> {
           label: '  Manga  ',
           value: 1,
         },
-        {
-          label: '  Genre  ',
-          value: 2,
-        },
       ],
+      genre_array: [
+        {label: ' Action ', key: 0,},{label: ' Adventure ', key: 1,},
+        {label: ' CARS ', key: 2,},{label: ' Comedy ', key: 3,},
+        {label: ' DEMENTIA ', key: 4,},{label: ' DEMONS ', key: 5,},
+        {label: ' MYSTERY ', key: 6,},{label: ' DRAMA ', key: 7,},
+        {label: ' ECCHI ', key: 8,},{label: ' FANTASY ', key: 9,},
+        {label: ' GAME ', key: 10,},
+        {label: ' HISTORICAL ', key: 12,},{label: ' HORROR ', key: 13,},
+        {label: ' KIDS ', key: 14,},{label: ' MAGIC ', key: 15,},
+        {label: ' MARTIAL_ARTS ', key: 16,},{label: ' MECHA ', key: 17,},
+        {label: ' MUSIC ', key: 18,},{label: ' PARODY ', key: 19,},
+        {label: ' SAMURAI ', key: 20,},{label: ' ROMANCE ', key: 21,},
+        {label: ' SCHOOL ', key: 22,},{label: ' SCI_FI ', key: 23,},
+        {label: ' SHOUJO ', key: 24,},{label: ' SHOUJO_AI ', key: 25,},
+        {label: ' SHOUNEN ', key: 26,},{label: ' SHOUNEN_AI ', key: 27,},
+        {label: ' SPACE ', key: 28,},{label: ' SPORTS ', key: 29,},
+        {label: ' SUPER_POWER ', key: 30,},{label: ' VAMPIRE ', key: 31,},
+        {label: ' HAREM ', key: 34,},{label: ' SLICE_OF_LIFE ', key: 35,},
+        {label: ' SUPERNATURAL ', key: 36,},{label: ' MILITARY ', key: 37,},
+        {label: ' POLICE ', key: 38,},{label: ' PSYCHOLOGICAL ', key: 39,},
+        {label: ' THRILLER ', key: 40,},{label: ' SEINEN ', key: 41,},
+        {label: ' JOSEI ', key: 42,},
+      ]
     };
   }
   _executeQuery = (query) => {
@@ -70,7 +89,7 @@ class SearchPage extends Component<Props> {
           disabled: false,
           message: 'Something bad happened ' + error
         }));
-  };
+  }
   _urlQuery = () => {
       const params = {
           q: this.state.searchString,
@@ -78,21 +97,48 @@ class SearchPage extends Component<Props> {
       };
       var key;
       key = params[key];
-      var options = ["anime", "manga", "character"];
+      var options = ["anime", "manga", "genre", "genre"];
+      var genreOptions = ["manga", "anime"];
       var selectedOption = options[this.state.value];
     
       const querystring = Object.keys(params)
         .map(key => key + '=' + encodeURIComponent(params[key]))
         .join('&');
-    
-      return `https://api.jikan.moe/v3/search/${selectedOption}?` + querystring;
-  };
+      switch (this.state.value) {
+        case 0:
+        case 1:
+          return `https://api.jikan.moe/v3/search/${selectedOption}?` + querystring;
+          break;
+        case 2:
+          return `https://api.jikan.moe/v3/${selectedOption}/${genreOptions[0]}/${this.state.genrePicked}?`;
+          break;  
+        case 3:
+          return `https://api.jikan.moe/v3/${selectedOption}/${genre_options[1]}/${this.state.genrePicked}?`;
+          break;
+        default:
+          return `https://api.jikan.moe/v3/search/${selectedOption}?` + querystring;
+          break;
+      } 
+  }
+  _onSearchPickedPressed = (searchIndex, searchValue) => {
+    this.setState({
+      value: searchIndex,
+      picked: searchValue,
+    });
+  }
+  _onGenrePickedPressed = (itemIndex, itemValue) => {
+    this.setState({
+      value: 2,
+      genrePicked: itemValue,
+    });
+  }
   _onSearchPressed = () => {
     const query = this._urlQuery();
     this._executeQuery(query);
-  };
+  }
   render() {
-    const {value, radio_props} = this.state;
+    const {value, genrePicked, picked} = this.state;
+    const textOptions = ['Anime', 'Manga'];
     return (
       <View style={styles.container}>
         <Image source={bgImage} style={styles.Image}/>
@@ -100,7 +146,6 @@ class SearchPage extends Component<Props> {
           <View style={styles.text}>
             <Text style={styles.heading}>Find Anime</Text>
             <Text style={styles.instructions}>Enter an Anime to search below:</Text>
-            <Text style={styles.description}>{this.state.message}</Text>
           </View>
           <View style={styles.flowRight}><TextInput underlineColorAndroid={'transparent'}
              style={styles.searchInput}
@@ -110,18 +155,37 @@ class SearchPage extends Component<Props> {
             <Button color='#F71735' title='Go' onPress={this._onSearchPressed} disabled={this.state.disabled}/>
           </View>
           <View style={styles.bottomContainer}>
-            <Text style={styles.heading}>Check a Box Below: </Text>
-            <View>
-              <RadioForm
+            <View style={{flex: 1}}>
+              {/* <RadioForm
                 radio_props={radio_props}
                 initial={0}
                 formHorizontal={true}
                 labelHorizontal={false}
                 buttonColor={'#2196f3'}
                 animation={true}
-                onPress={(value) => {this.setState({value:value})}}
-              />
+                onPress={(value) => this._onButtonPressed(value)}
+              />*/}
+              <Text style={styles.instructions}>Search {textOptions[this.state.value]}</Text>
+              <Picker
+                selectedValue={this.state.picked}
+                onValueChange={(searchValue, searchIndex) => this._onSearchPickedPressed(searchIndex, searchValue)}>
+                <Picker.Item label="Anime" value="anime" />
+                <Picker.Item label="Manga" value="manga" />
+              </Picker>
             </View>
+            <View style={{flex: 1}}>
+              <Text style={styles.instructions}>Anime Genre</Text>
+              <View>
+              <Picker
+                selectedValue={this.state.genrePicked}
+                onValueChange={(itemValue, itemIndex) => this._onGenrePickedPressed(itemIndex, itemValue)}>
+                {this.state.genre_array.map(genre => {
+                  return (< Picker.Item label={genre.label} value={genre.key} key={genre.key}/>);
+                })}
+              </Picker>
+              </View>
+            </View>
+            <Text>{this.state.value}</Text>
           </View>
         </View>
       </View>
@@ -147,13 +211,14 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 2,
+    flexDirection: 'row',
     backgroundColor: '#FDFFFC',
   },
   text: {
     backgroundColor: '#FDFFFC',
     alignItems: 'center',
     alignSelf: 'stretch',
-    flex: 1,
+    height: 80,
   },
   flowRight: {
   flexDirection: 'row',
@@ -194,6 +259,10 @@ const styles = StyleSheet.create({
     padding: 5,
     color: '#011627',
     fontSize: 20,
+  },
+  modal: {
+    marginTop: 22,
+    paddingLeft: 30,
   },
   checkRow: {
     flexDirection: 'row',

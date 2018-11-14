@@ -9,8 +9,7 @@ import {
   FlatList,
   Text,
 } from 'react-native';
-let
- nsfwImage = {
+const nsfwImage = {
   image_url: "https://i.imgur.com/iux1a7b.png"
 };
 const nsfwRating = ["R", "Rx", "R+"];
