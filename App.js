@@ -13,6 +13,8 @@ import SearchResults from './SearchResults';
 import MangaResults from './MangaResults';
 import AnimeView from './AnimeView';
 import MangaView from './MangaView';
+import AnimeGenre from './AnimeGenre';
+import MangaGenre from './MangaGenre';
 import {
   createStackNavigator,
 } from 'react-navigation';
@@ -26,6 +28,8 @@ const RootStack = createStackNavigator(
   MangaList: MangaResults,
   Anime: AnimeView,
   Manga: MangaView,
+  AnimeGenre: AnimeGenre,
+  MangaGenre: MangaGenre,
   },
   { initialRouteName: 'Home',
   }
