@@ -138,15 +138,17 @@ class SearchPage extends Component<Props> {
     this.setState({
       value: 2,
       genrePickedAnime: itemValue,
+    }, () => {
+      this._onSearchButtonPressed();
     });
-    this._onSearchButtonPressed();
   }
   _onGenrePickedMangaPressed = (itemIndex, itemValue) => {
     this.setState({
       value: 3,
       genrePickedManga: itemValue,
+    }, () => {
+      this._onSearchButtonPressed();
     });
-    this._onSearchButtonPressed();
   }
   _onSearchButtonPressed = () => {
     const query = this._urlQuery();
@@ -179,7 +181,7 @@ class SearchPage extends Component<Props> {
                 <Picker.Item label="Anime" value="anime" />
                 <Picker.Item label="Manga" value="manga" />
               </Picker>
-              <Text>Value: {this.state.value} Genre Picked: {this.state.genrePickedManga}</Text>
+              <Text>Value: {this.state.value} Genre Picked: {this.state.genrePickedAnime}</Text>
             </View>
             <View style={{flex: 1}}>
               <Text style={styles.bottomText}>Anime Genre</Text>

@@ -7,7 +7,6 @@
  */
 
 import React, {Component} from 'react';
-import {TextInput, Button, StyleSheet, Text, View, Image} from 'react-native';
 import SearchPage from './SearchPage';
 import SearchResults from './SearchResults';
 import MangaResults from './MangaResults';
@@ -15,6 +14,9 @@ import AnimeView from './AnimeView';
 import MangaView from './MangaView';
 import AnimeGenre from './AnimeGenre';
 import MangaGenre from './MangaGenre';
+import GenreAnimeView from './GenreAnimeView';
+import GenreMangaView from './GenreMangaView';
+
 import {
   createStackNavigator,
 } from 'react-navigation';
@@ -30,6 +32,8 @@ const RootStack = createStackNavigator(
   Manga: MangaView,
   AnimeGenre: AnimeGenre,
   MangaGenre: MangaGenre,
+  GenreAnimeView: GenreAnimeView,
+  GenreMangaView: GenreMangaView,
   },
   { initialRouteName: 'Home',
   }

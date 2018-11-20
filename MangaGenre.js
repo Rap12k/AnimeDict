@@ -31,6 +31,7 @@ class ListItem extends React.PureComponent {
               <Text style={styles.header}>Type: {item.type}</Text>
               <Text style={styles.header}>Volumes: {item.volumes}</Text>
               <Text style={styles.header}>Score: {item.score ? item.score : 'None'}</Text>
+              <Text style={styles.header}>Genres: {item.genres[0].name ? item.genres[0].name : 'None'} {item.genres[1].name ? ', ' + item.genres[1].name : ''}</Text>
             </View>
           </View>
           <View style={styles.separator}/>
@@ -57,7 +58,7 @@ export default class SearchResults extends Component {
 
   _onPressItem = (index) => {
     const { navigate, state } = this.props.navigation;
-    navigate('Manga', {result: state.params.result[index]});
+    navigate('GenreMangaView', {result: state.params.result[index]});
   };
   render() {
     const { params } = this.props.navigation.state;

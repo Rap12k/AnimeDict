@@ -31,6 +31,7 @@ class ListItem extends React.PureComponent {
               <Text style={styles.header}>Type: {item.type}</Text>
               <Text style={styles.header}>Episodes: {item.episodes}</Text>
               <Text style={styles.header}>Score: {item.score ? item.score : 'None'}</Text>
+              <Text style={styles.header}>Genres: {item.genres[0].name ? item.genres[0].name : 'None'} {item.genres[1].name ? ', ' + item.genres[1].name : ''}</Text>
             </View>
           </View>
           <View style={styles.separator}/>
@@ -57,7 +58,7 @@ export default class SearchResults extends Component {
 
   _onPressItem = (index) => {
     const { navigate, state } = this.props.navigation;
-    navigate('Anime', {result: state.params.result[index]});
+    navigate('GenreAnimeView', {result: state.params.result[index]});
   };
   render() {
     const { params } = this.props.navigation.state;
@@ -90,6 +91,10 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 18,
+    color: '#011627'
+  },
+  genre: {
+    fontSize: 16,
     color: '#011627'
   },
   rowContainer: {
