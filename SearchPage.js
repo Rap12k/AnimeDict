@@ -101,7 +101,8 @@ class SearchPage extends Component<Props> {
   _urlQuery = () => {
       const params = {
           q: this.state.searchString,
-          page: 1
+          page: 1,
+          limit: 25
       };
       var key;
       key = params[key];
@@ -156,7 +157,7 @@ class SearchPage extends Component<Props> {
   }
   render() {
     const {value, genrePicked, picked} = this.state;
-    const textOptions = ['Anime', 'Manga', '', ''];
+    const textOptions = ['Anime', 'Manga', 'Genre-A', 'Genre-M'];
     return (
       <View style={styles.container}>
         <Image source={bgImage} style={styles.Image}/>
