@@ -102,7 +102,7 @@ class SearchPage extends Component<Props> {
       const params = {
           q: this.state.searchString,
           page: 1,
-          limit: 25
+          limit: 40
       };
       var key;
       key = params[key];
