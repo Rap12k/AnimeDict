@@ -62,7 +62,7 @@ class SearchPage extends Component<Props> {
   }
   _executeQuery = (query) => {
     this.setState(
-      { 
+      {
         disabled: true,
       });
     fetch(query)
@@ -102,14 +102,14 @@ class SearchPage extends Component<Props> {
       const params = {
           q: this.state.searchString,
           page: 1,
-          limit: 40
+          limit: 50
       };
       var key;
       key = params[key];
       var options = ["anime", "manga", "genre", "genre"];
       var genreOptions = ["anime", "manga"];
       var selectedOption = options[this.state.value];
-    
+
       const querystring = Object.keys(params)
         .map(key => key + '=' + encodeURIComponent(params[key]))
         .join('&');
@@ -120,14 +120,14 @@ class SearchPage extends Component<Props> {
           break;
         case 2:
           return `https://api.jikan.moe/v3/${selectedOption}/${genreOptions[0]}/${this.state.genrePickedAnime}?`;
-          break;  
+          break;
         case 3:
           return `https://api.jikan.moe/v3/${selectedOption}/${genreOptions[1]}/${this.state.genrePickedManga}?`;
           break;
         default:
           return `https://api.jikan.moe/v3/search/${selectedOption}?` + querystring;
           break;
-      } 
+      }
   }
   _onSearchPickedPressed = (searchIndex, searchValue) => {
     this.setState({
@@ -279,7 +279,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   bottomText: {
-    padding: 2,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
     color: '#011627',
     fontSize: 16,
   },

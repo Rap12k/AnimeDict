@@ -21,7 +21,6 @@ export default class MangaView extends Component {
       <View style={styles.container}>
         <Image style={styles.image}
           source={{uri: manga.image_url}} />
-        <Text style={styles.title}>{manga.title}</Text>
         <View style={styles.content}>
           <View style={styles.dataRow}>
             <View style={styles.data}>
@@ -39,6 +38,7 @@ export default class MangaView extends Component {
               <Text style={styles.headings}>Started: {manga.start_date.slice(0, 10)}</Text>
             </View>
             <View style={styles.prose}>
+              <Text style={styles.title}>{manga.title}</Text>
               <Text style={styles.description}>{manga.synopsis}</Text>
             </View>
           </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 1,
   },
   content: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     flex: 1,
   },
   separator: {

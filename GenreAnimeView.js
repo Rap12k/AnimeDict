@@ -21,7 +21,6 @@ export default class AnimeView extends Component {
       <View style={styles.container}>
         <Image style={styles.image}
           source={{uri: anime.image_url}} />
-        <Text style={styles.title}>{anime.title}</Text>
         <View style={styles.content}>
           <View style={styles.dataRow}>
             <View style={styles.data}>
@@ -39,7 +38,8 @@ export default class AnimeView extends Component {
               <Text style={styles.headings}>Aired: {anime.airing_start ? anime.airing_start.slice(0,10) : 'Not Yet' }</Text>
             </View>
             <View style={styles.prose}>
-              <Text style={styles.description}>{anime.synopsis.slice(0, 360)}...</Text>
+              <Text style={styles.title}>{anime.title}</Text>
+              <Text style={styles.description}>{anime.synopsis.slice(0, 300)}...</Text>
             </View>
           </View>
         </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 1,
   },
   content: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     flex: 1,
   },
   separator: {
