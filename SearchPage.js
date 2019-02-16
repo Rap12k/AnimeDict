@@ -36,27 +36,29 @@ class SearchPage extends Component<Props> {
         },
       ],
       genre_array: [
-        {label: ' Action ', key: 1,},{label: ' Adventure ', key: 2,},
-        {label: ' CARS ', key: 3,},{label: ' Comedy ', key: 4,},
+        {label: ' ACTION ', key: 1,},{label: ' ADVENTURE ', key: 2,},
+        {label: ' CARS ', key: 3,},{label: ' COMEDY ', key: 4,},
         {label: ' DEMENTIA ', key: 5,},{label: ' DEMONS ', key: 6,},
-        {label: ' MYSTERY ', key: 7,},{label: ' DRAMA ', key: 8,},
+        {label: ' DRAMA ', key: 8,},
         {label: ' ECCHI ', key: 9,},{label: ' FANTASY ', key: 10,},
-        {label: ' GAME ', key: 11,},
+        {label: ' GAME ', key: 11,},{label: ' HAREM ', key: 35,},
         {label: ' HISTORICAL ', key: 13,},{label: ' HORROR ', key: 14,},
+        {label: ' JOSEI ', key: 43,},
         {label: ' KIDS ', key: 15,},{label: ' MAGIC ', key: 16,},
         {label: ' MARTIAL_ARTS ', key: 17,},{label: ' MECHA ', key: 18,},
-        {label: ' MUSIC ', key: 19,},{label: ' PARODY ', key: 20,},
-        {label: ' SAMURAI ', key: 21,},{label: ' ROMANCE ', key: 22,},
+        {label: ' MILITARY ', key: 38,},{label: ' MUSIC ', key: 19,},
+        {label: ' MYSTERY ', key: 7,},{label: ' PARODY ', key: 20,},
+        {label: ' POLICE ', key: 39,},{label: ' PSYCHOLOGICAL ', key: 40,},
+        {label: ' ROMANCE ', key: 22,},
+        {label: ' SAMURAI ', key: 21,},
         {label: ' SCHOOL ', key: 23,},{label: ' SCI_FI ', key: 24,},
+        {label: ' SEINEN ', key: 42,},
         {label: ' SHOUJO ', key: 25,},{label: ' SHOUJO_AI ', key: 26,},
         {label: ' SHOUNEN ', key: 27,},{label: ' SHOUNEN_AI ', key: 28,},
-        {label: ' SPACE ', key: 29,},{label: ' SPORTS ', key: 30,},
-        {label: ' SUPER_POWER ', key: 31,},{label: ' VAMPIRE ', key: 32,},
-        {label: ' HAREM ', key: 35,},{label: ' SLICE_OF_LIFE ', key: 36,},
-        {label: ' SUPERNATURAL ', key: 37,},{label: ' MILITARY ', key: 38,},
-        {label: ' POLICE ', key: 39,},{label: ' PSYCHOLOGICAL ', key: 40,},
-        {label: ' THRILLER ', key: 41,},{label: ' SEINEN ', key: 42,},
-        {label: ' JOSEI ', key: 43,},
+        {label: ' SLICE_OF_LIFE ', key: 36,},{label: ' SPACE ', key: 29,},
+        {label: ' SPORTS ', key: 30,},{label: ' SUPER_POWER ', key: 31,},
+        {label: ' SUPERNATURAL ', key: 37,},{label: ' THRILLER ', key: 41,},
+        {label: ' VAMPIRE ', key: 32,},
       ]
     };
   }
@@ -80,11 +82,11 @@ class SearchPage extends Component<Props> {
               break;
           case 2:
             this.props.navigation.navigate(
-              'AnimeGenre', {result: responseJson.anime});
+              'AnimeGenre', {result: responseJson.anime.slice(0,50)});
               break;
           case 3:
             this.props.navigation.navigate(
-              'MangaGenre', {result: responseJson.manga});
+              'MangaGenre', {result: responseJson.manga.slice(0,50)});
               break;
           default:
             this.props.navigation.navigate(
@@ -174,8 +176,8 @@ class SearchPage extends Component<Props> {
             <Button color='#F71735' title='Go' onPress={this._onSearchButtonPressed} disabled={this.state.disabled}/>
           </View>
           <View style={styles.bottomContainer}>
-            <View style={{flex: 1}}>
-              <Text style={styles.bottomText}>Search {textOptions[this.state.value]}</Text>
+            <View style={styles.bottomButton}>
+              <Text style={styles.bottomText}>Search Anime/Manga</Text>
               <Picker
                 selectedValue={this.state.picked}
                 onValueChange={(searchValue, searchIndex) => this._onSearchPickedPressed(searchIndex, searchValue)}>
@@ -184,7 +186,7 @@ class SearchPage extends Component<Props> {
               </Picker>
               <Text>Value: {this.state.value} Genre Picked: {this.state.genrePickedAnime}</Text>
             </View>
-            <View style={{flex: 1}}>
+            <View style={styles.bottomButton}>
               <Text style={styles.bottomText}>Anime Genre</Text>
               <View>
               <Picker
@@ -232,6 +234,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FDFFFC',
   },
+  bottomButton: {
+    flex: 1,
+  },
   text: {
     backgroundColor: '#FDFFFC',
     alignItems: 'center',
@@ -242,7 +247,9 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf: 'stretch',
-  padding: 5,
+  paddingLeft: '2.5%',
+  paddingRight: '2.5%',
+  paddingBottom: 5,
   },
   searchInput: {
     height: 36,
