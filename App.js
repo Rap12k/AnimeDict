@@ -16,6 +16,8 @@ import AnimeGenre from './AnimeGenre';
 import MangaGenre from './MangaGenre';
 import GenreAnimeView from './GenreAnimeView';
 import GenreMangaView from './GenreMangaView';
+import UpcomingAnime from './UpcomingAnime';
+import UpcomingAnimeView from './UpcomingAnimeView';
 
 import {
   createStackNavigator,
@@ -34,6 +36,8 @@ const RootStack = createStackNavigator(
   MangaGenre: MangaGenre,
   GenreAnimeView: GenreAnimeView,
   GenreMangaView: GenreMangaView,
+  UpcomingAnime: UpcomingAnime,
+  UpcomingAnimeView: UpcomingAnimeView,
   },
   { initialRouteName: 'Home',
   }

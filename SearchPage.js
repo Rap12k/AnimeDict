@@ -25,6 +25,7 @@ class SearchPage extends Component<Props> {
       picked: 0,
       genrePickedAnime: 0,
       genrePickedManga: 0,
+      seasonPicked: 0,
       radio_props: [
         {
           label: '  Anime  ',
@@ -88,6 +89,10 @@ class SearchPage extends Component<Props> {
             this.props.navigation.navigate(
               'MangaGenre', {result: responseJson.manga.slice(0,50)});
               break;
+          case 4:
+            this.props.navigation.navigate(
+              'UpcomingAnime', {result: responseJson.anime.slice(0,50)});
+              break;
           default:
             this.props.navigation.navigate(
               'Results', {result: responseJson.results});
@@ -108,8 +113,10 @@ class SearchPage extends Component<Props> {
       };
       var key;
       key = params[key];
-      var options = ["anime", "manga", "genre", "genre"];
+      var options = ["anime", "manga", "genre", "genre", "season"];
       var genreOptions = ["anime", "manga"];
+      var yearOptions = ["2018", "217", "2016", "2015"];
+      var seasons = ["spring", "summer", "fall", "winter"];
       var selectedOption = options[this.state.value];
 
       const querystring = Object.keys(params)
@@ -125,6 +132,9 @@ class SearchPage extends Component<Props> {
           break;
         case 3:
           return `https://api.jikan.moe/v3/${selectedOption}/${genreOptions[1]}/${this.state.genrePickedManga}?`;
+          break;
+        case 4:
+          return `https://api.jikan.moe/v3/${selectedOption}/${this.state.seasonPicked}?`;
           break;
         default:
           return `https://api.jikan.moe/v3/search/${selectedOption}?` + querystring;
@@ -153,12 +163,20 @@ class SearchPage extends Component<Props> {
       this._onSearchButtonPressed();
     });
   }
+  _onSeasonButtonPressed = (seasonIndex, seasonValue) => {
+    this.setState({
+      value: 4,
+      seasonPicked: seasonValue,
+    }, () => {
+      this._onSearchButtonPressed();
+    });
+  }
   _onSearchButtonPressed = () => {
     const query = this._urlQuery();
     this._executeQuery(query);
   }
   render() {
-    const {value, genrePicked, picked} = this.state;
+    const {value, genrePicked, picked, seasonPicked} = this.state;
     const textOptions = ['Anime', 'Manga', 'Genre-A', 'Genre-M'];
     return (
       <View style={styles.container}>
@@ -184,7 +202,14 @@ class SearchPage extends Component<Props> {
                 <Picker.Item label="Anime" value="anime" />
                 <Picker.Item label="Manga" value="manga" />
               </Picker>
-              <Text>Value: {this.state.value} Genre Picked: {this.state.genrePickedAnime}</Text>
+              <Text style={styles.bottomText}>Seasonal Anime</Text>
+              <Picker
+                selectedValue={this.state.seasonPicked}
+                onValueChange={(seasonValue, seasonIndex) => this._onSeasonButtonPressed(seasonIndex, seasonValue)}>
+                <Picker.Item label="Season Option" value="later" />
+                <Picker.Item label="Upcoming" value="later" />
+                <Picker.Item label="Archives" value="archive" />
+              </Picker>
             </View>
             <View style={styles.bottomButton}>
               <Text style={styles.bottomText}>Anime Genre</Text>
