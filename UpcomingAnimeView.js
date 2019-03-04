@@ -29,11 +29,11 @@ export default class AnimeView extends Component {
               <View style={styles.separator}/>
               <Text style={styles.headings}>Members: {anime.members}</Text>
               <View style={styles.separator}/>
-              <Text style={styles.headings}>Genre: {anime.genres[0].name ? anime.producers[0].name : 'Not Announced'}</Text>
+              <Text style={styles.headings}>Genre: {anime.genres[0].name ? anime.genres[0].name : 'Not Announced'}</Text>
               <View style={styles.separator}/>
-              <Text style={styles.headings}>Genre2: {anime.genres[1].name ? anime.producers[0].name : 'Not Announced'}</Text>
+              <Text style={styles.headings}>Genre2: {anime.genres[1].name ? anime.genres[1].name : 'Not Announced'}</Text>
               <View style={styles.separator}/>
-              <Text style={styles.headings}>Producer: {anime.producers[0].name ? anime.producers[0].name : 'None'}</Text>
+              <Text style={styles.headings}>Producer: {anime.producers[0] ? anime.producers[0].name : 'Not Announced'}</Text>
               <View style={styles.separator}/>
               <Text style={styles.headings}>Source: {anime.source}</Text>
               <View style={styles.separator}/>
