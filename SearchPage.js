@@ -75,24 +75,24 @@ class SearchPage extends Component<Props> {
         switch (this.state.value) {
           case 0:
             this.props.navigation.navigate(
-            'Results', {result: responseJson.results});
+            'Results', {searchQuery: query});
             break;
           case 1:
             this.props.navigation.navigate(
               'MangaList', {result: responseJson.results});
-              break;
+              break;//the total results are 50
           case 2:
             this.props.navigation.navigate(
-              'AnimeGenre', {result: responseJson.anime.slice(0,50)});
-              break;
+              'AnimeGenre', {result: responseJson.anime});
+              break;//total results are 100
           case 3:
             this.props.navigation.navigate(
-              'MangaGenre', {result: responseJson.manga.slice(0,50)});
-              break;
+              'MangaGenre', {result: responseJson.manga});
+              break;//total results are 100
           case 4:
             this.props.navigation.navigate(
               'UpcomingAnime', {result: responseJson.anime.slice(0,50)});
-              break;
+              break;//total results are 228
           default:
             this.props.navigation.navigate(
               'Results', {result: responseJson.results});
@@ -108,7 +108,6 @@ class SearchPage extends Component<Props> {
   _urlQuery = () => {
       const params = {
           q: this.state.searchString,
-          page: 1,
           limit: 50
       };
       var key;
@@ -202,13 +201,13 @@ class SearchPage extends Component<Props> {
                 <Picker.Item label="Anime" value="anime" />
                 <Picker.Item label="Manga" value="manga" />
               </Picker>
-              <Text style={styles.bottomText}>Seasonal Anime</Text>
+              <Text style={styles.bottomText}>Time</Text>
               <Picker
                 selectedValue={this.state.seasonPicked}
                 onValueChange={(seasonValue, seasonIndex) => this._onSeasonButtonPressed(seasonIndex, seasonValue)}>
                 <Picker.Item label="Season Option" value="later" />
                 <Picker.Item label="Upcoming" value="later" />
-                <Picker.Item label="Archives" value="archive" />
+                <Picker.Item label="Schedule" value="later" />
               </Picker>
             </View>
             <View style={styles.bottomButton}>
