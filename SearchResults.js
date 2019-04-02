@@ -6,7 +6,7 @@ import {
   Image,
   View,
   TouchableHighlight,
-  TouchableOpacity,
+  Button,
   FlatList,
   Text,
   ActivityIndicator,
@@ -52,6 +52,7 @@ export default class SearchResults extends Component {
     super(props);
     this.params = this.props.navigation.state.params;
     this.state = {
+      loading: true,
       serverData: [],
       fetching_from_server: false,
       fetchRequest: this.params.searchQuery,
@@ -59,15 +60,6 @@ export default class SearchResults extends Component {
     this.offset = 1;
     //index of offset to load from web api
   }
-  _keyExtractor = (item, index) => index;
-
-  _renderItem = ({item, index}) => (
-    <ListItem
-       item={item}
-       index={index}
-       onPressItem={this._onPressItem}
-    />
-    );
   componentDidMount() {
     fetch(this.state.fetchRequest + '&page=' + this.offset)
     //Sending the currect offset with get request
@@ -112,37 +104,40 @@ export default class SearchResults extends Component {
     });
   };
   _onPressItem = (index) => {
+    console.log(this.state.serverData[index]);
     const { navigate, state } = this.props.navigation;
-    navigate('Anime', {result: serverData[index].params.result});
+    navigate('Anime', {result: this.state.serverData[index]});
   };
   renderFooter() {
     return (
     //Footer View with Load More button
       <View style={styles.footer}>
-        <TouchableOpacity
-          activeOpacity={0.9}
+        <Button
           onPress={this._loadMoreData}
           //On Click of button calling loadMoreData function to load more data
-          style={styles.loadMoreBtn}>
-          <Text style={styles.btnText}>Load More</Text>
-          {this.state.fetching_from_server ? (
-            <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
-          ) : null}
-        </TouchableOpacity>
+          color="#800000"
+          title='Load More'
+          disabled={this.state.fetching_from_server}
+        />
       </View>
     );
   }
   render() {
-    const { params } = this.props.navigation.state;
     return (
       <View>
-      {this.state.loading? (
+      {this.state.loading ? (
         <ActivityIndicator size="large" />
       ) : (
         <FlatList
           data={this.state.serverData}
-          keyExtractor={(item) => item.toString()}
-          renderItem={this._renderItem}
+          keyExtractor = {(item, index) => index}
+          renderItem = {({item, index}) => (
+            <ListItem
+              item={item}
+              index={index}
+              onPressItem={this._onPressItem}
+            />
+          )}
           ListFooterComponent={this.renderFooter.bind(this)}
         />)}
       </View>
@@ -165,14 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-  },
-  loadMoreBtn: {
-    padding: 10,
-    backgroundColor: '#800000',
-    borderRadius: 4,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#FDFFFC"
   },
   textContainer: {
     flex: 1
@@ -194,5 +182,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     backgroundColor: "#FDFFFC"
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 30,
   },
 });

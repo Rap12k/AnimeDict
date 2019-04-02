@@ -79,7 +79,7 @@ class SearchPage extends Component<Props> {
             break;
           case 1:
             this.props.navigation.navigate(
-              'MangaList', {result: responseJson.results});
+              'MangaList', {searchQuery: query});
               break;//the total results are 50
           case 2:
             this.props.navigation.navigate(
