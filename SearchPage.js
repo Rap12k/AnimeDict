@@ -287,14 +287,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    borderColor: '#B0B0B0',
-    borderWidth: 2,
+    padding: 2,
     alignItems: 'center',
   },
   Image: {
-    height: '50%',
+    flex: 1,
     width: '100%',
-    alignSelf: 'center'
   },
   heading: {
     fontSize: 30,

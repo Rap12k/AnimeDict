@@ -126,7 +126,7 @@ export default class MangaResults extends Component {
       ) : (
         <FlatList
           data={this.state.serverData}
-          keyExtractor = {(item, index) => index}
+          keyExtractor = {(item, index) => index.toString()}
           renderItem = {({item, index}) => (
             <ListItem
               item={item}
