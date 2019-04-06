@@ -46,8 +46,6 @@ export default class SearchResults extends Component {
     title: 'Upcoming Anime',
     headerTitleStyle: {textAlign:'center', alignSelf:'center',flex:1, fontWeight:'bold',},
   };
-  _keyExtractor = (item, index) => index;
-
   _renderItem = ({item, index}) => (
     <ListItem
        item={item}
@@ -65,7 +63,9 @@ export default class SearchResults extends Component {
     return (
       <FlatList
         data={params.result}
-        keyExtractor={(item) => item.toString()}
+        initialNumToRender={25}
+        maxToRenderPerBatch={25}
+        keyExtractor = {(item, index) => index.toString()}
         renderItem={this._renderItem}
       />
     );

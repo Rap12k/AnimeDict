@@ -26,6 +26,7 @@ class SearchPage extends Component<Props> {
       genrePickedAnime: 0,
       genrePickedManga: 0,
       seasonPicked: 0,
+      anime: true,
       radio_props: [
         {
           label: '  Anime  ',
@@ -68,42 +69,46 @@ class SearchPage extends Component<Props> {
       {
         disabled: true,
       });
-    fetch(query)
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({ message: '', disabled: false});
         switch (this.state.value) {
           case 0:
+            this.setState({ message: '', disabled: false});
             this.props.navigation.navigate(
             'Results', {searchQuery: query});
             break;
           case 1:
+            this.setState({ message: '', disabled: false});
             this.props.navigation.navigate(
               'MangaList', {searchQuery: query});
               break;//the total results are 50
           case 2:
+            this.setState({ message: '', disabled: false});
             this.props.navigation.navigate(
-              'AnimeGenre', {result: responseJson.anime});
+              'AnimeGenre', {searchQuery: query});
               break;//total results are 100
           case 3:
+            this.setState({ message: '', disabled: false});
             this.props.navigation.navigate(
-              'MangaGenre', {result: responseJson.manga});
+              'MangaGenre', {searchQuery: query});
               break;//total results are 100
           case 4:
-            this.props.navigation.navigate(
-              'UpcomingAnime', {result: responseJson.anime.slice(0,50)});
-              break;//total results are 228
+            fetch(query)
+              .then(response => response.json())
+              .then(responseJson => {
+                this.setState({ message: '', disabled: false});
+                this.props.navigation.navigate(
+                'UpcomingAnime', {result: responseJson.anime});
+                })
+              .catch(error =>
+                this.setState({
+                  disabled: false,
+                  message: 'Something bad happened ' + error
+                }));
+            break;//total results are 228
           default:
             this.props.navigation.navigate(
               'Results', {result: responseJson.results});
             break;
         }
-      })
-      .catch(error =>
-        this.setState({
-          disabled: false,
-          message: 'Something bad happened ' + error
-        }));
   }
   _urlQuery = () => {
       const params = {
@@ -127,10 +132,10 @@ class SearchPage extends Component<Props> {
           return `https://api.jikan.moe/v3/search/${selectedOption}?` + querystring;
           break;
         case 2:
-          return `https://api.jikan.moe/v3/${selectedOption}/${genreOptions[0]}/${this.state.genrePickedAnime}?`;
+          return `https://api.jikan.moe/v3/${selectedOption}/${genreOptions[0]}/${this.state.genrePickedAnime}/`;
           break;
         case 3:
-          return `https://api.jikan.moe/v3/${selectedOption}/${genreOptions[1]}/${this.state.genrePickedManga}?`;
+          return `https://api.jikan.moe/v3/${selectedOption}/${genreOptions[1]}/${this.state.genrePickedManga}/`;
           break;
         case 4:
           return `https://api.jikan.moe/v3/${selectedOption}/${this.state.seasonPicked}?`;
@@ -176,13 +181,13 @@ class SearchPage extends Component<Props> {
   }
   render() {
     const {value, genrePicked, picked, seasonPicked} = this.state;
-    const textOptions = ['Anime', 'Manga', 'Genre-A', 'Genre-M'];
+    const textOptions = ['Anime', 'Manga', 'Anime Genre', 'Manga Genre'];
     return (
       <View style={styles.container}>
         <Image source={bgImage} style={styles.Image}/>
         <View style={styles.content}>
           <View style={styles.text}>
-            <Text style={styles.heading}>Find Anime</Text>
+            <Text style={styles.heading}>Find {textOptions[this.state.value]}</Text>
             <Text style={styles.instructions}>Enter an Anime to search below:</Text>
           </View>
           <View style={styles.flowRight}><TextInput underlineColorAndroid={'transparent'}
@@ -221,14 +226,14 @@ class SearchPage extends Component<Props> {
                 })}
               </Picker>
               </View>
-              <Text style={styles.bottomText}>Manga Genre</Text>
-              <Picker
+              <Text style={styles.bottomText}>Mange Genre</Text>
+                <Picker
                 selectedValue={this.state.genrePickedManga}
                 onValueChange={(itemValue, itemIndex) => this._onGenrePickedMangaPressed(itemIndex, itemValue)}>
                 {this.state.genre_array.map(genre => {
                   return (< Picker.Item label={genre.label} value={genre.key} key={genre.key}/>);
                 })}
-              </Picker>
+                </Picker>
             </View>
           </View>
         </View>
@@ -295,7 +300,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   heading: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
     padding: 5,
     paddingTop: 0,
