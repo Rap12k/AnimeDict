@@ -22,11 +22,12 @@ class SearchPage extends Component<Props> {
       searchString: 'Bobobo',
       message: '',
       value: 0,
-      picked: 0,
+      picked: '',
       genrePickedAnime: 0,
       genrePickedManga: 0,
       seasonPicked: 0,
       anime: true,
+      manga: false,
       radio_props: [
         {
           label: '  Anime  ',
@@ -113,7 +114,8 @@ class SearchPage extends Component<Props> {
   _urlQuery = () => {
       const params = {
           q: this.state.searchString,
-          limit: 50
+          limit: 50,
+          type: this.state.picked
       };
       var key;
       key = params[key];
@@ -145,11 +147,24 @@ class SearchPage extends Component<Props> {
           break;
       }
   }
-  _onSearchPickedPressed = (searchIndex, searchValue) => {
+  _onSearchPickedPressed = (searchValue) => {
     this.setState({
-      value: searchIndex,
       picked: searchValue,
     });
+  }
+  _onAnimeButtonPressed = () => {
+    this.setState({
+      value: 0,
+      anime: true,
+      manga: false,
+    })
+  }
+  _onMangaButtonPressed = () => {
+    this.setState({
+      value: 1,
+      anime: false,
+      manga: true,
+    })
   }
   _onGenrePickedAnimePressed = (itemIndex, itemValue) => {
     this.setState({
@@ -180,15 +195,22 @@ class SearchPage extends Component<Props> {
     this._executeQuery(query);
   }
   render() {
-    const {value, genrePicked, picked, seasonPicked} = this.state;
-    const textOptions = ['Anime', 'Manga', 'Anime Genre', 'Manga Genre'];
+    const {value, genrePicked, picked, seasonPicked, anime, manga} = this.state;
+    const textOptions = ['Anime', 'Manga', 'Anime Genre', 'Manga Genre', 'Seasonal'];
     return (
       <View style={styles.container}>
         <Image source={bgImage} style={styles.Image}/>
+        <View style={styles.switch}>
+            <View style={styles.leftSwitch}>
+              <Button color='#000000' title='Anime' onPress={this._onAnimeButtonPressed} disabled={this.state.anime}/>
+            </View>
+            <View style={styles.rightSwitch}>
+              <Button color='#F71735' title='Manga' onPress={this._onMangaButtonPressed} disabled={this.state.manga}/>
+            </View>
+          </View>
         <View style={styles.content}>
           <View style={styles.text}>
-            <Text style={styles.heading}>Find {textOptions[this.state.value]}</Text>
-            <Text style={styles.instructions}>Enter an Anime to search below:</Text>
+            <Text style={styles.instructions}>Enter an {textOptions[this.state.value]} to search below:</Text>
           </View>
           <View style={styles.flowRight}><TextInput underlineColorAndroid={'transparent'}
              style={styles.searchInput}
@@ -199,13 +221,29 @@ class SearchPage extends Component<Props> {
           </View>
           <View style={styles.bottomContainer}>
             <View style={styles.bottomButton}>
-              <Text style={styles.bottomText}>Search Anime/Manga</Text>
-              <Picker
-                selectedValue={this.state.picked}
-                onValueChange={(searchValue, searchIndex) => this._onSearchPickedPressed(searchIndex, searchValue)}>
-                <Picker.Item label="Anime" value="anime" />
-                <Picker.Item label="Manga" value="manga" />
-              </Picker>
+              <Text style={styles.bottomText}>Type of {textOptions[this.state.value]}</Text>
+              {this.state.anime ?  
+                (
+                  <Picker
+                    selectedValue={this.state.picked}
+                    onValueChange={(searchValue, searchIndex) => this._onSearchPickedPressed(searchValue)}>
+                    <Picker.Item label="TV" value="tv" />
+                    <Picker.Item label="OVA" value="ova" />
+                    <Picker.Item label="Movie" value="movie" />
+                    <Picker.Item label="Special" value="special" />
+                    <Picker.Item label="ONA" value="ona" />
+                    <Picker.Item label="Music" value="music" />
+                  </Picker>)
+                : (
+                    <Picker
+                      selectedValue={this.state.picked}
+                      onValueChange={(searchValue, searchIndex) => this._onSearchPickedPressed(searchValue)}>
+                      <Picker.Item label="Novel" value="novel" />
+                      <Picker.Item label="Oneshot" value="oneshot" />
+                      <Picker.Item label="Doujin" value="doujin" />
+                      <Picker.Item label="Manhwa" value="manhwa" />
+                      <Picker.Item label="Manhua" value="manhua" />
+                    </Picker>)}
               <Text style={styles.bottomText}>Time</Text>
               <Picker
                 selectedValue={this.state.seasonPicked}
@@ -226,7 +264,7 @@ class SearchPage extends Component<Props> {
                 })}
               </Picker>
               </View>
-              <Text style={styles.bottomText}>Mange Genre</Text>
+              <Text style={styles.bottomText}>Manga Genre</Text>
                 <Picker
                 selectedValue={this.state.genrePickedManga}
                 onValueChange={(itemValue, itemIndex) => this._onGenrePickedMangaPressed(itemIndex, itemValue)}>
@@ -270,7 +308,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDFFFC',
     alignItems: 'center',
     alignSelf: 'stretch',
-    height: 80,
+    padding: 7,
   },
   flowRight: {
   flexDirection: 'row',
@@ -299,6 +337,17 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
+  switch: {
+    flexDirection: 'row',
+  },
+  leftSwitch: {
+    flex: 1,
+    padding: 10,
+  },
+  rightSwitch: {
+    flex: 1,
+    padding: 10,
+  },
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -308,7 +357,7 @@ const styles = StyleSheet.create({
     color: '#011627',
   },
   instructions: {
-    padding: 4,
+    padding: 2,
     color: '#011627',
     fontSize: 18,
   },
@@ -327,8 +376,6 @@ const styles = StyleSheet.create({
   checkRow: {
     flexDirection: 'row',
     flex: 1,
-  },
-  boxes: {
   },
 });
 
