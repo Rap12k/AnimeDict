@@ -25,6 +25,8 @@ class SearchPage extends Component<Props> {
       picked: '',
       genrePickedAnime: 0,
       genrePickedManga: 0,
+      topPickedAnime: '',
+      topPickedManga: '',
       seasonPicked: 0,
       anime: true,
       manga: false,
@@ -183,12 +185,46 @@ class SearchPage extends Component<Props> {
     });
   }
   _onSeasonButtonPressed = (seasonIndex, seasonValue) => {
-    this.setState({
-      value: 4,
-      seasonPicked: seasonValue,
-    }, () => {
-      this._onSearchButtonPressed();
-    });
+    {seasonValue ? 
+      (
+        this.setState({
+        value: 4,
+        seasonPicked: seasonValue,
+        }, () => {
+          this._onSearchButtonPressed();
+        })
+      )
+      : (
+        console.log("help me"));
+      };
+  }
+  _onTopPickedAnimePressed = (topValue) => {
+    {topValue ? 
+      (
+        this.setState({
+        value: 5,
+        topPickedAnime: topValue,
+        })//, () => {
+         // this._onSearchButtonPressed();
+        //})
+      )
+      : (
+        console.log("help me"));
+      };
+  }
+  _onTopPickedMangaPressed = (topValue) => {
+    {topValue ? 
+      (
+        this.setState({
+        value: 6,
+        topPickedManga: topValue,
+        })//, () => {
+          //this._onSearchButtonPressed();
+        //})
+      )
+      : (
+        console.log("help me"));
+      };
   }
   _onSearchButtonPressed = () => {
     const query = this._urlQuery();
@@ -202,10 +238,10 @@ class SearchPage extends Component<Props> {
         <Image source={bgImage} style={styles.Image}/>
         <View style={styles.switch}>
             <View style={styles.leftSwitch}>
-              <Button color='#000000' title='Anime' onPress={this._onAnimeButtonPressed} disabled={this.state.anime}/>
+              <Button color='#F71735' title='Anime' onPress={this._onAnimeButtonPressed} disabled={this.state.anime}/>
             </View>
             <View style={styles.rightSwitch}>
-              <Button color='#F71735' title='Manga' onPress={this._onMangaButtonPressed} disabled={this.state.manga}/>
+              <Button color='#000000' title='Manga' onPress={this._onMangaButtonPressed} disabled={this.state.manga}/>
             </View>
           </View>
         <View style={styles.content}>
@@ -217,7 +253,7 @@ class SearchPage extends Component<Props> {
              onChangeText={(searchString) => this.setState({searchString})}
              value={this.state.text}
             placeholder='Enter Here' />
-            <Button color='#F71735' title='Go' onPress={this._onSearchButtonPressed} disabled={this.state.disabled}/>
+            <Button color='#20A4F3' title='Go' onPress={this._onSearchButtonPressed} disabled={this.state.disabled}/>
           </View>
           <View style={styles.bottomContainer}>
             <View style={styles.bottomButton}>
@@ -225,8 +261,9 @@ class SearchPage extends Component<Props> {
               {this.state.anime ?  
                 (
                   <Picker
-                    selectedValue={this.state.picked}
+                    selectedValue={0}
                     onValueChange={(searchValue, searchIndex) => this._onSearchPickedPressed(searchValue)}>
+                    <Picker.Item label="All" value="all" />
                     <Picker.Item label="TV" value="tv" />
                     <Picker.Item label="OVA" value="ova" />
                     <Picker.Item label="Movie" value="movie" />
@@ -236,8 +273,9 @@ class SearchPage extends Component<Props> {
                   </Picker>)
                 : (
                     <Picker
-                      selectedValue={this.state.picked}
+                      selectedValue={0}
                       onValueChange={(searchValue, searchIndex) => this._onSearchPickedPressed(searchValue)}>
+                      <Picker.Item label="All" value="all" />
                       <Picker.Item label="Novel" value="novel" />
                       <Picker.Item label="Oneshot" value="oneshot" />
                       <Picker.Item label="Doujin" value="doujin" />
@@ -245,33 +283,83 @@ class SearchPage extends Component<Props> {
                       <Picker.Item label="Manhua" value="manhua" />
                     </Picker>)}
               <Text style={styles.bottomText}>Time</Text>
-              <Picker
-                selectedValue={this.state.seasonPicked}
-                onValueChange={(seasonValue, seasonIndex) => this._onSeasonButtonPressed(seasonIndex, seasonValue)}>
-                <Picker.Item label="Season Option" value="later" />
-                <Picker.Item label="Upcoming" value="later" />
-                <Picker.Item label="Schedule" value="later" />
-              </Picker>
+              {this.state.anime ?  
+                (
+                  <Picker
+                    selectedValue={0}
+                    onValueChange={(seasonValue, seasonIndex) => this._onSeasonButtonPressed(seasonIndex, seasonValue)}
+                    enabled={this.state.anime}>
+                    <Picker.Item label="Season Option" value={false} />
+                    <Picker.Item label="Upcoming" value="later" />
+                    <Picker.Item label="Schedule" value="later" />
+                  </Picker>)
+                : (
+                  <Picker
+                      selectedValue={0}
+                      onValueChange={(searchValue, searchIndex) => this._onSearchPickedPressed(searchValue)}>
+                      <Picker.Item label="All" value="all" />
+                      <Picker.Item label="Novel" value="novel" />
+                      <Picker.Item label="Oneshot" value="oneshot" />
+                      <Picker.Item label="Doujin" value="doujin" />
+                      <Picker.Item label="Manhwa" value="manhwa" />
+                      <Picker.Item label="Manhua" value="manhua" />
+                  </Picker>
+                )}
             </View>
             <View style={styles.bottomButton}>
-              <Text style={styles.bottomText}>Anime Genre</Text>
+              <Text style={styles.bottomText}>{textOptions[this.state.value]} Genre</Text>
               <View>
-              <Picker
-                selectedValue={this.state.genrePickedAnime}
-                onValueChange={(itemValue, itemIndex) => this._onGenrePickedAnimePressed(itemIndex, itemValue)}>
-                {this.state.genre_array.map(genre => {
-                  return (< Picker.Item label={genre.label} value={genre.key} key={genre.key}/>);
-                })}
-              </Picker>
+                {this.state.anime ? 
+                  ( 
+                    <Picker
+                      selectedValue={this.state.genrePickedAnime}
+                      onValueChange={(itemValue, itemIndex) => this._onGenrePickedAnimePressed(itemIndex, itemValue)}>
+                      {this.state.genre_array.map(genre => {
+                        return (< Picker.Item label={genre.label} value={genre.key} key={genre.key}/>);
+                      })}
+                    </Picker>
+                  )
+                  : (
+                    <Picker
+                      selectedValue={this.state.genrePickedManga}
+                      onValueChange={(itemValue, itemIndex) => this._onGenrePickedMangaPressed(itemIndex, itemValue)}>
+                      {this.state.genre_array.map(genre => {
+                        return (< Picker.Item label={genre.label} value={genre.key} key={genre.key}/>);
+                      })}
+                    </Picker>
+                  )}
               </View>
-              <Text style={styles.bottomText}>Manga Genre</Text>
-                <Picker
-                selectedValue={this.state.genrePickedManga}
-                onValueChange={(itemValue, itemIndex) => this._onGenrePickedMangaPressed(itemIndex, itemValue)}>
-                {this.state.genre_array.map(genre => {
-                  return (< Picker.Item label={genre.label} value={genre.key} key={genre.key}/>);
-                })}
-                </Picker>
+              <Text style={styles.bottomText}>Top {textOptions[this.state.value]}</Text>
+              <View>
+              {this.state.anime ? 
+                (
+                  <Picker
+                      selectedValue={0}
+                      onValueChange={(topValue, searchIndex) => this._onTopPickedAnimePressed(topValue)}>
+                      <Picker.Item label="Top Option" value={false} />
+                      <Picker.Item label="All" value="all" />
+                      <Picker.Item label="Airing" value="airing" />
+                      <Picker.Item label="Upcoming" value="upcoming" />
+                      <Picker.Item label="TV" value="tv" />
+                      <Picker.Item label="Movie" value="movie" />
+                      <Picker.Item label="OVA" value="ova" />
+                      <Picker.Item label="Special" value="special" />
+                  </Picker>)
+                : (
+                  <Picker
+                      selectedValue={0}
+                      onValueChange={(topValue, searchIndex) => this._onTopPickedMangaPressed(topValue)}>
+                      <Picker.Item label="Top Option" value={false} />
+                      <Picker.Item label="All" value="all" />
+                      <Picker.Item label="Manga" value="manga" />
+                      <Picker.Item label="Novel" value="novels" />
+                      <Picker.Item label="Oneshot" value="oneshots" />
+                      <Picker.Item label="Doujin" value="doujin" />
+                      <Picker.Item label="Manhwa" value="manhwa" />
+                      <Picker.Item label="Manhua" value="manhua" />
+                  </Picker>
+                )}
+              </View>
             </View>
           </View>
         </View>
